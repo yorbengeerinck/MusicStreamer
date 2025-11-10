@@ -1,0 +1,1894 @@
+/* ======= Base ======= */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #121212;
+  color: #fff;
+  /* toegevoegd: voorkom horizontale whitespace/scroll */
+  overflow-x: hidden;
+}
+
+body.dark {
+  background: #121212;
+  color: #fff;
+}
+body:not(.dark) {
+  background: #f6f7f8;
+  color: #0f1115;
+}
+
+/* ======= Layout ======= */
+.spotify-app {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  align-items: center;
+  background: inherit;
+}
+
+.sidebar {
+  display: block;
+}
+
+.main-content {
+  width: 90%;
+  max-width: 450px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 0 1rem;
+  flex: 1;
+  box-sizing: border-box;
+}
+body:not(.dark) .main-content {
+  background: transparent;
+}
+
+/* SelectPage: centreer en geef bredere container */
+.main-content.select-mode {
+  width: 90%;
+  max-width: 1000px;
+  justify-content: center;
+  margin-left: auto;   /* toegevoegd */
+  margin-right: auto;  /* toegevoegd */
+  padding-left: 0;     /* toegevoegd */
+  padding-right: 0;    /* toegevoegd */
+}
+
+/* ======= Topbar & Search ======= */
+.topbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+body:not(.dark) .brand {
+  color: #0f1115;
+}
+
+.searchbar {
+  width: 70vw;
+  max-width: 320px;
+  padding: 0.7rem 1.2rem;
+  border-radius: 50px;
+  border: none;
+  background: #282828;
+  color: #fff;
+  font-size: 1.07rem;
+  box-shadow: 0 1px 8px #18181822;
+  transition: background 0.2s;
+  text-align: center;
+}
+body:not(.dark) .searchbar {
+  background: #ffffff;
+  color: #0f1115;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+body:not(.dark) .searchbar:focus {
+  border-color: #1db954;
+  box-shadow: 0 0 0 3px rgba(29,185,84,0.18);
+}
+.searchbar:focus {
+  outline: 2px solid #1db954;
+  background: #232323;
+}
+
+.theme-toggle-btn {
+  background: #232323;
+  color: #1db954;
+  border: none;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.theme-toggle-btn:hover {
+  background: #1db954;
+  color: #232323;
+}
+
+/* ======= Playlist ======= */
+.playlist-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playlist-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1db954;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+body:not(.dark) .playlist-title {
+  color: #0b1220;
+}
+
+.song-list {
+  width: 110%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ======= Song Item ======= */
+.song-item {
+  width: 97vw;
+  max-width: 8000px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  cursor: pointer;
+  background: #181818;
+  box-shadow: 0 2px 14px #18181815;
+  transition: background 0.18s, box-shadow 0.18s;
+  border: 2px solid transparent;
+  color: #fff !important;
+  margin-right: 1.5rem;
+}
+body:not(.dark) .song-item {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.song-item:hover {
+  background: #232323;
+  box-shadow: 0 4px 22px #1db95422;
+}
+body:not(.dark) .song-item:hover {
+  background: #f3f8f4;               /* subtiel groen tintje */
+  border-color: rgba(29,185,84,0.35);
+}
+.song-item.active {
+  background: linear-gradient(90deg,#1db954 0%,#232323 100%);
+  color: #fff !important;
+  font-weight: 600;
+  border: 2px solid #1db954;
+  box-shadow: 0 4px 22px #1db95433;
+}
+body:not(.dark) .song-item.active {
+  background: #eaf7ef;
+  border-color: rgba(29,185,84,0.55);
+  box-shadow: 0 4px 14px rgba(29,185,84,0.18);
+}
+.song-icon {
+  font-size: 1.4rem;
+  margin-right: 0.5rem;
+}
+.song-name {
+  font-size: 1.12rem;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #fff !important;
+}
+body:not(.dark) .song-name {
+  color: #0f1115;
+}
+
+/* ======= Player ======= */
+.player-footer{
+  width: 100%;
+  position: fixed;
+  left: 0; bottom: 0;
+  background: black;
+  border-top: 2px solid black;
+  padding: 0.6rem 0;
+  box-shadow: 0 -2px 24px #18181866;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+}
+/* Player Container */
+.player-bar {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: #181818;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 6px 24px #18181855;
+  padding: 1.6rem 2rem 1.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+body:not(.dark) .player-bar {
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+/* Controls */
+.player-controls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+.player-btn {
+  background: linear-gradient(90deg,#232323 55%,#1db954 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px #1db95422;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.12s;
+  outline: none;
+}
+.player-btn:active {
+  box-shadow: 0 1px 4px #1db95466;
+  transform: scale(0.97);
+}
+.player-btn:hover {
+  background: linear-gradient(90deg,#1db954 0%,#232323 100%);
+  color: #1db954;
+  box-shadow: 0 8px 32px #1db95455;
+}
+body:not(.dark) .player-btn {
+  border: 1px solid rgba(0,0,0,0.12);
+  color: #0f1115;
+}
+body:not(.dark) .player-btn:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+/* Song Title under buttons */
+.player-song-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+}
+.player-song {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: #232323;
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 2px 12px #1db95411;
+  width: 100%;
+  text-align: center;
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body:not(.dark) .player-song {
+  background: #f0f2f4;
+  color: #0f1115;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* Audio Custom Styling */
+.audio-player {
+  width: 100%;
+  max-width: 480px;
+  min-width: 210px;
+  margin: 0.7rem auto 0 auto;
+  background: #232323;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #1db95433;
+  border: 1px solid #1db954;
+  outline: none;
+  padding: 0.5rem 0.2rem;
+  display: block;
+}
+
+/* Chrome audio controls */
+.audio-player::-webkit-media-controls-panel {
+  background-color: #232323;
+  border-radius: 10px;
+}
+.audio-player::-webkit-media-controls-play-button {
+  filter: invert(50%) sepia(99%) saturate(500%) hue-rotate(90deg) brightness(1.2);
+  transition: filter 0.2s;
+}
+.audio-player::-webkit-media-controls-timeline {
+  background: #1db954;
+  border-radius: 4px;
+  height: 7px;
+}
+.audio-player::-webkit-media-controls-current-time-display,
+.audio-player::-webkit-media-controls-time-remaining-display {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.06rem;
+}
+.audio-player::-webkit-media-controls-volume-slider {
+  filter: invert(50%) sepia(99%) saturate(500%) hue-rotate(90deg) brightness(1.2);
+}
+.audio-player:focus {
+  outline: 2px solid #1db954;
+}
+
+/* Firefox audio range thumb */
+.audio-player::-moz-range-thumb {
+  background: #1db954;
+  border-radius: 4px;
+}
+
+/* ======= Utility ======= */
+.player-empty {
+  color: #bbb;
+  font-size: 1.07rem;
+  font-style: italic;
+}
+
+/* ======= Scrollbar ======= */
+::-webkit-scrollbar {
+  width: 9px;
+  background: #181818;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #181818;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e4e4e4;
+}
+html {
+  scrollbar-color: #fff #181818;
+  scrollbar-width: thin;
+}
+
+/* ======= Responsive ======= */
+@media (min-width: 700px) {
+  .main-content {
+    max-width: 800px;
+    padding: 3rem 2rem 0 2rem;
+  }
+  .song-item {
+    width: 80%;
+    max-width: 600px;
+    padding: 1.2rem 2rem;
+    font-size: 1.15rem;
+  }
+  .player-bar {
+    max-width: 600px;
+    padding: 2.2rem 3rem 1.3rem 3rem;
+  }
+  .playlist-section{
+    max-height:47.5vh;
+  }
+  .player-song-row,
+  .audio-player {
+    max-width: 600px;
+  }
+  .searchbar {
+    max-width: 480px;
+    font-size: 1.15rem;
+  }
+}
+
+@media(min-width:300px){
+  .song-list{
+    max-height: 47vh;
+  }
+  .song-item{
+    max-width: 300px;
+  }
+  .topbar.nav {
+    box-sizing: border-box;
+     /* overschrijft eerdere padding-left/right */
+  }
+  .nav-left .brand { margin-left: 4px; }
+  .nav-right { padding-right: 4px; }
+
+  .nav-left { display: flex; align-items: center; }
+  .brand {
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    font-size: 1.1rem;
+  }
+
+  /* Thema-knop in het midden */
+  .nav-center { display: flex; justify-content: center; align-items: center; }
+
+  /* Rechts: switch + avatar */
+  .nav-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .switch-btn {
+    background: transparent;
+    color: inherit;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+}
+
+/* SelectPage */
+.select-page {
+  padding: 24px 0;        /* was: 24px (links gaf extra ruimte) */
+  display: grid;
+  gap: 20px;
+  width: 90%;             /* 90% breed en gecentreerd */
+  margin: 0 auto;
+}
+
+.select-title{
+  text-align: center;
+}
+
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 50px;
+  justify-items: stretch;  /* laat items netjes de kolom vullen */
+  align-items: stretch;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #181818;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  transition: transform .15s ease, border-color .15s ease, box-shadow .2s ease, background .15s ease;
+  width: 100%;
+  box-sizing: border-box;  /* voorkom overflow buiten de grid-kolom */
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* was: center -> avatars staan nu gelijk bovenaan */
+  text-align: center;
+}
+body:not(.dark) .user-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+body:not(.dark) .user-card:hover {
+  background: #f9fafb;
+  border-color: #1db95488;
+  box-shadow: 0 10px 26px rgba(29,185,84,0.16);
+}
+
+/* SelectPage: tekst zwart in light mode */
+body:not(.dark) .user-card { color: #0f1115 !important; }
+body:not(.dark) .user-card .user-name { color: #0f1115 !important; }
+
+.user-card:hover {
+  transform: translateY(-2px);
+  border-color: #1db954aa;
+  box-shadow: 0 6px 20px #1db954aa;
+  background: #1b1b1b;
+}
+
+.user-card:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.user-card:focus-visible {
+  outline: 2px solid #1db954;
+  outline-offset: 3px;
+  border-color: #1db954;
+}
+
+/* Verberg grote sidebar-titel op muziekpagina */
+.spotify-app.music-mode .sidebar .logo {
+  display: none;
+}
+
+/* NAV layout met 3 kolommen */
+.topbar.nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 16px;
+  padding-left:2rem;
+  padding-right:2rem;
+}
+
+/* NAV: niet tegen de randen plakken + responsieve padding */
+.topbar.nav {
+  box-sizing: border-box;
+  padding-inline: clamp(16px, 4vw, 48px); /* overschrijft eerdere padding-left/right */
+}
+.nav-left .brand { margin-left: 4px; }
+.nav-right { padding-right: 4px; }
+
+.nav-left { display: flex; align-items: center; }
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: 1.1rem;
+}
+
+/* Thema-knop in het midden */
+.nav-center { display: flex; justify-content: center; align-items: center; }
+
+/* Rechts: switch + avatar */
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch-btn {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.switch-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Optioneel: zoekbalk net onder de nav centreren */
+.topbar.under-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 6px;
+  margin-top: -2rem;
+}
+
+/* Avatars (nav rechtsboven) */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.12);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  background: #111;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .2s ease;
+}
+.avatar:hover {
+  transform: translateY(-1px);
+  border-color: #1db954aa;
+  box-shadow: 0 6px 18px #1db95422;
+}
+.avatar:focus-visible {
+  outline: 2px solid #1db954;
+  outline-offset: 2px;
+}
+body:not(.dark) .avatar {
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+body:not(.dark) .avatar:hover {
+  border-color: #1db95488;
+  box-shadow: 0 8px 22px rgba(29,185,84,0.18);
+}
+
+/* Avatars op SelectPage kaarten */
+.user-card{
+  max-width:40vw;
+}
+.user-avatar {
+  display: block;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.12);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  background: #111;
+  flex-shrink: 0;
+  transition: border-color .15s ease, box-shadow .2s ease, transform .15s ease;
+}
+.user-name{
+  display: block;
+  font-size: 1.5rem;
+  margin: 0.6rem 0 0 0; /* reset bottom margin (voor p) */
+}
+.user-card:hover .user-avatar {
+  border-color: #1db954aa;
+  box-shadow: 0 8px 24px #1db95422;
+  transform: translateY(-1px);
+}
+
+/* Theme toggle (centrale knop in navbar) */
+.nav-center .theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  letter-spacing: .01em;
+  transition: background .18s ease, color .18s ease, box-shadow .2s ease, transform .12s ease, border-color .18s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  min-width: 140px;
+  justify-content: center;
+}
+
+/* Donker thema knop */
+body.dark .theme-toggle-btn[data-mode="dark"] {
+  background: #232323;
+  color: #1db954;
+}
+body.dark .theme-toggle-btn[data-mode="dark"]:hover {
+  background: #1db954;
+  color: #181818;
+  border-color: #1db954aa;
+  box-shadow: 0 6px 20px #1db95433;
+}
+
+/* Licht thema knop */
+body:not(.dark) .theme-toggle-btn[data-mode="light"] {
+  background: #f0f0f0;
+  color: #0f0f0f;
+  border-color: rgba(0,0,0,.08);
+}
+body:not(.dark) .theme-toggle-btn[data-mode="light"]:hover {
+  background: #ffffff;
+  color: #1db954;
+  border-color: #1db95488;
+  box-shadow: 0 6px 18px #1db95422;
+}
+
+/* Focus/active states */
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid #1db954;
+  outline-offset: 3px;
+}
+.theme-toggle-btn:active {
+  transform: translateY(0.5px);
+}
+
+/* Icon + label spacing */
+.theme-icn { font-size: 1.15rem; line-height: 1; }
+.theme-label { font-size: 0.98rem; }
+
+/* ==== Fix: song-tekst in light mode (overrulet eerdere !important) ==== */
+body:not(.dark) .song-item { color: #0f1115 !important; }
+body:not(.dark) .song-list .song-item .song-name,
+body:not(.dark) .song-list .song-item .song-icon { color: #0f1115 !important; }
+body:not(.dark) .song-item:hover,
+body:not(.dark) .song-item.active { color: #0f1115 !important; }
+
+/* ==== Switch user knop: stijlvol in dark & light ==== */
+.switch-btn {
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s, box-shadow .2s, transform .12s;
+}
+body.dark .switch-btn {
+  background: #232323;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+body.dark .switch-btn:hover {
+  background: #1db954;
+  color: #181818;
+  border-color: #1db954aa;
+  box-shadow: 0 10px 26px #1db95433;
+}
+body:not(.dark) .switch-btn {
+  background: #ffffff;
+  color: #0f1115;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+}
+body:not(.dark) .switch-btn:hover {
+  background: #1db954;
+  color: #ffffff;
+  border-color: #1db954;
+  box-shadow: 0 8px 20px rgba(29,185,84,0.22);
+}
+
+/* ==== Player-onderbalk in light mode naar lichtgrijs ==== */
+body:not(.dark) .player-footer {
+  background: #eceff1; /* lichtgrijs */
+  border-top: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 -2px 18px rgba(0,0,0,0.08);
+}
+
+/* Zoekbalk compacter + minder gap naar de titel op kleine formaten */
+
+/* ≤ 700px breed */
+@media (max-width: 700px) {
+  .searchbar { padding: 0.55rem 0.9rem; }
+  .topbar.under-nav { margin-bottom: 0.6rem; } /* kleiner gat boven de titel */
+}
+
+/* ≤ 500px breed */
+@media (max-width: 500px) {
+  .searchbar { padding: 0.48rem 0.8rem; }
+  .topbar.under-nav { margin-bottom: 0.5rem; }
+}
+
+/* Lage hoogtes: compacter */
+@media (max-height: 700px) {
+  .searchbar { padding: 0.5rem 0.85rem; }
+  .topbar.under-nav { margin-bottom: 0.5rem; }
+}
+@media (max-height: 600px) {
+  .searchbar { padding: 0.45rem 0.75rem; }
+  .topbar.under-nav { margin-bottom: 0.4rem; }
+}
+
+/* Compactere player op kleine schermen */
+@media (max-width: 699.98px) {
+  :root{
+    --player-clear: 300px;        /* reserveer genoeg ruimte voor fixed player */
+    --songlist-max: 36vh;         /* lijst iets kleiner in deze band */
+  }
+
+  /* player compacter */
+  .player-bar { padding: 1rem 1.2rem 0.8rem 1.2rem; gap: .6rem; }
+  .player-controls { gap: 1rem; }
+  .player-btn { width: 40px; height: 40px; font-size: 1.3rem; }
+  .player-song { font-size: 1.02rem; padding: .5rem .8rem; }
+  .audio-player { max-width: 440px; margin-top: .35rem; padding: .35rem .2rem; }
+
+  /* zorg dat laatste item niet achter de player valt */
+  .song-list { padding-bottom: calc(var(--player-clear) + 12px) !important; }
+}
+
+/* <= 600px: nog iets compacter */
+@media (max-width: 599.98px) {
+  :root{
+    --player-clear: 310px;
+    --songlist-max: 34vh;
+  }
+}
+
+/* svh-varianten voor mobiele toolbars */
+@supports (height: 100svh) {
+  @media (max-width: 699.98px) { :root{ --songlist-max: 36svh; } }
+  @media (max-width: 599.98px) { :root{ --songlist-max: 34svh; } }
+}
+
+/* ===== Layout fixes: navbar overflow + ruimte voor fixed player ===== */
+:root{
+  --nav-h: 64px;                /* fallback als niet gezet */
+  --under-nav-h: 56px;          /* fallback */
+  --player-clear: 240px;        /* ruimte onderaan voor de fixed player */
+}
+
+/* navbar-items mogen krimpen; brand ellipsis i.p.v. afsnijden */
+.topbar.nav > .nav-left,
+.topbar.nav > .nav-center,
+.topbar.nav > .nav-right { min-width: 0; }
+.brand { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* reserveer ruimte onderaan voor de fixed player */
+.main-content { padding-bottom: var(--player-clear) !important; }
+
+/* songlist: cap tegen player + stabiele scrollbar */
+.song-list{
+  scrollbar-gutter: stable both-edges;
+  max-height: min(
+    var(--songlist-max, 60vh),
+    calc(100svh - var(--nav-h) - var(--under-nav-h) - var(--player-clear) - 32px)
+  ) !important;
+  width: 100% !important;
+}
+
+/* ===== Compact op kleine schermen ===== */
+@media (max-width: 480px){
+  :root{ --player-clear: 260px; }           /* player neemt iets meer ruimte op mobiel */
+  .nav-center .theme-toggle-btn{ min-width: 110px; padding: 8px 12px; font-size: .95rem; }
+  .switch-btn{ padding: 6px 10px; font-size: .95rem; }
+  .avatar{ width: 34px !important; height: 34px !important; }
+  .brand{ font-size: .98rem !important; }
+}
+
+/* Héél smal: icon-only theme button om overlap te voorkomen */
+@media (max-width: 360px){
+  .nav-center .theme-label{ display: none; }
+  .nav-center .theme-toggle-btn{ min-width: auto; padding: 8px 10px; }
+}
+
+/* ===== Groter op grote/volle schermen ===== */
+@media (min-height: 1000px){
+  :root{ --player-clear: 220px; }           /* player relatief compacter t.o.v. hoogte */
+}
+@media (min-height: 1080px){
+  :root{ --songlist-max: 90vh; }            /* hoge schermen: grote songlist */
+}
+
+/* ===== Size system & responsive overrides (plaats onderaan) ===== */
+
+/* Basis-variabelen */
+:root{
+  /* Containers */
+  --content-max: 760px;          /* hoofdcontent max breedte */
+  --content-pad-x: 16px;
+  --content-pad-y: 16px;
+
+  /* Navbar + search */
+  --nav-h: 64px;
+  --search-h: 44px;
+  --brand-size: 1.05rem;
+
+  /* Playlist titel + items */
+  --title-size: 1.6rem;
+  --song-item-h: 64px;
+  --song-font: 1rem;
+
+  /* Player */
+  --player-max: 620px;
+  --player-pad-x: 24px;
+  --player-pad-y: 20px;
+
+  /* Avatars */
+  --avatar-nav: 40px;
+  --avatar-card: 88px;
+
+  /* Songlist cap (mag per breakpoint aangepast worden) */
+  --songlist-max: 60vh;
+}
+
+/* Containers centreren en op max-breedte */
+.spotify-app .main-content{
+  width: min(100% - (var(--content-pad-x) * 2), var(--content-max)) !important;
+  max-width: var(--content-max) !important;
+  padding: var(--content-pad-y) var(--content-pad-x) 0 var(--content-pad-x) !important;
+  box-sizing: border-box;
+}
+
+/* Topbar hoogtes en brandingmaat */
+.topbar.nav{ min-height: var(--nav-h) !important; }
+.brand{ font-size: var(--brand-size) !important; }
+
+/* Zoekbalk – altijd containerbreedte, schaalbaar in hoogte */
+.searchbar{
+  width: 100% !important;
+  max-width: none !important;
+  min-height: var(--search-h) !important;
+  font-size: clamp(.95rem, 2.2vw, 1.05rem) !important;
+}
+
+/* Playlist sectie */
+.playlist-section{ width: 100% !important; }
+.playlist-title{ font-size: var(--title-size) !important; }
+
+/* Songlist: geen 110%, netjes binnen container + hoogtecap */
+.song-list{
+  width: 100% !important;
+  max-width: var(--content-max) !important;
+  margin-inline: auto !important;
+  max-height: var(--songlist-max) !important;
+  overflow: auto !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Song items: 100% van de container, vaste min-hoogte en fontgrootte */
+.song-item{
+  width: 100% !important;
+  max-width: none !important;
+  min-height: var(--song-item-h) !important;
+  font-size: var(--song-font) !important;
+  box-sizing: border-box !important;
+}
+
+/* Player onderaan: containerbreedte en max breedte */
+.player-footer{ width: 100% !important; }
+.player-bar{
+  width: min(100% - (var(--player-pad-x) * 2), var(--player-max)) !important;
+  max-width: var(--player-max) !important;
+  padding: var(--player-pad-y) var(--player-pad-x) !important;
+  margin: 0 auto !important;
+}
+
+/* Avatar groottes */
+.avatar{
+  width: var(--avatar-nav) !important;
+  height: var(--avatar-nav) !important;
+}
+.user-avatar{
+  width: var(--avatar-card) !important;
+  height: var(--avatar-card) !important;
+}
+
+/* SelectPage container breder dan content */
+.main-content.select-mode{
+  width: min(100% - (var(--content-pad-x) * 2), 1000px) !important;
+  max-width: 1000px !important;
+}
+
+/* ==== Songlist height: width-first normalization (1 bron van waarheid) */
+/* Altijd deze waarde gebruiken (overschrijft eerdere min(100svh - ...)) */
+.song-list {
+  max-height: var(--songlist-max) !important;
+}
+
+/* Standaard (valt terug als geen band matcht) */
+:root {
+  --songlist-max: 60vh !important;
+}
+
+/* Alleen per breedteband sturen (zelfde breedte = zelfde hoogte) */
+@media (max-width: 380px) {
+  :root { --songlist-max: 40vh !important; }
+}
+@media (min-width: 381px) and (max-width: 699.98px) {
+  :root { --songlist-max: 40vh !important; }
+}
+@media (min-width: 700px) and (max-width: 1199.98px) {
+  :root { --songlist-max: 60vh !important; }
+}
+@media (min-width: 1200px) and (max-width: 1599.98px) {
+  :root { --songlist-max: 75vh !important; }
+}
+@media (min-width: 1600px) {
+  :root { --songlist-max: 85vh !important; }
+}
+
+/* Optioneel: haal hoogte-gebaseerde overrides weg om inconsistentie te voorkomen */
+/* (laat deze rules staan als je exact gelijk wil houden op dezelfde breedte) */
+/*
+@media (min-height: 1000px){ ... }
+@media (min-height: 1080px){ ... }
+@supports (height: 100svh){ ... }
+*/
+
+/* ==== Compacte player bij lage schermhoogte (lijst blijft zichtbaar) ==== */
+@media (max-height: 880px) {
+  :root { --player-clear: 180px; } /* ruimte voor fixed player (was 240px) */
+
+  .player-footer { padding: 0.4rem 0; }
+  .player-bar {
+    padding: 1rem 1.2rem 0.8rem 1.2rem;
+    gap: 0.6rem;
+  }
+  .player-controls { gap: 1rem; }
+  .player-btn { width: 42px; height: 42px; font-size: 1.35rem; }
+
+  .player-song { font-size: 1.05rem; padding: 0.5rem 0.8rem; }
+  .audio-player { max-width: 440px; margin-top: 0.4rem; padding: 0.35rem 0.2rem; }
+}
+
+/* Extra compact */
+@media (max-height: 740px) {
+  :root { --player-clear: 160px; }
+
+  .player-bar { padding: 0.8rem 1rem 0.6rem 1rem; }
+  .player-controls { gap: 0.9rem; }
+  .player-btn { width: 38px; height: 38px; font-size: 1.2rem; }
+
+  .player-song { font-size: 0.96rem; padding: 0.45rem 0.7rem; }
+  .audio-player { max-width: 400px; }
+}
+
+/* Super compact (zeer lage hoogte) */
+@media (max-height: 620px) {
+  :root { --player-clear: 140px; }
+
+  .player-bar { padding: 0.7rem 0.9rem 0.5rem 0.9rem; }
+  .player-controls { gap: 0.8rem; }
+  .player-btn { width: 34px; height: 34px; font-size: 1.1rem; }
+
+  .player-song { font-size: 0.9rem; padding: 0.4rem 0.65rem; }
+  .audio-player { max-width: 360px; }
+}
+
+/* Songlist: trek 1 itemhoogte af zodat de lijst net boven de player eindigt */
+:root { --songlist-safety: var(--song-item-h, 64px); }
+
+.song-list {
+  /* gebruik de reeds gekozen cap en verminder met 1 itemhoogte */
+  max-height: calc(var(--songlist-max) - var(--songlist-safety)) !important;
+  /* extra zekerheid: ruimte voor de fixed player */
+  padding-bottom: calc(var(--player-clear) + 8px) !important;
+  box-sizing: border-box;
+}
+
+/* Dynamische groei song-list: +60px per +50px hoogte boven 700px */
+:root {
+  --songlist-th: 700px;           /* startpunt */
+  --songlist-step-mult: 1.2;      /* 60/50 = 1.2 px groei per px */
+  --songlist-dyn: max(0px, calc((100vh - var(--songlist-th)) * var(--songlist-step-mult)));
+}
+/* Gebruik small viewport height op mobiel */
+@supports (height: 100svh) {
+  :root {
+    --songlist-dyn: max(0px, calc((100svh - var(--songlist-th)) * var(--songlist-step-mult)));
+  }
+}
+
+/* Pas groei toe bovenop je bestaande cap en trek 1 itemhoogte af */
+.song-list {
+  /* was: max-height: calc(var(--songlist-max) - var(--songlist-safety)) !important; */
+  max-height: calc((var(--songlist-max) + var(--songlist-dyn)) - var(--songlist-safety)) !important;
+}
+
+/* ==== Nav compacter (breedte) op alle resoluties ==== */
+
+/* Geef de center kolom ruimte; links/rechts zo smal mogelijk */
+.topbar.nav {
+  grid-template-columns: auto 1fr auto !important;
+  gap: clamp(6px, 1.2vw, 12px) !important;
+}
+
+/* Brand: kleiner en ellipsis */
+.nav-left .brand {
+  font-size: clamp(.95rem, .9rem + .2vw, 1.05rem) !important;
+  max-width: min(26vw, 200px) !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Theme toggle: lagere min-width + minder padding */
+.nav-center .theme-toggle-btn {
+  min-width: clamp(92px, 18vw, 128px) !important;          /* was 140px */
+  padding: clamp(6px, .9vh, 10px) clamp(10px, 2vw, 14px) !important;
+  gap: clamp(6px, 1vw, 10px) !important;
+  line-height: 1 !important;
+}
+.theme-label { font-size: clamp(.9rem, .86rem + .2vw, 1rem) !important; }
+.theme-icn    { font-size: clamp(1rem, .9rem + .3vw, 1.15rem) !important; }
+
+/* Switch user: compacter, capped width met ellipsis */
+.switch-btn {
+  padding: clamp(6px, .8vh, 9px) clamp(10px, 2vw, 14px) !important;
+  font-size: clamp(.85rem, .8rem + .2vw, .98rem) !important;
+  max-width: clamp(110px, 18vw, 160px) !important;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Rechts: kleinere gap */
+.nav-right { gap: clamp(6px, 1.2vw, 10px) !important; }
+
+/* Avatar in nav: fluïde kleiner op smalle schermen */
+.avatar {
+  width: clamp(28px, 3.2vw, 40px) !important;
+  height: clamp(28px, 3.2vw, 40px) !important;
+}
+
+/* Extra knijpen op heel smal */
+@media (max-width: 420px) {
+  .nav-center .theme-label { display: none; }         /* icon-only */
+  .nav-center .theme-toggle-btn { min-width: auto !important; }
+  .switch-btn { max-width: clamp(96px, 24vw, 132px) !important; }
+}
+
+/* Nav compacter onder 800px: kleinere knoppen + minder zijruimte */
+@media (max-width: 799.98px) {
+  .topbar.nav {
+    grid-template-columns: auto 1fr auto !important;
+    padding-inline: clamp(8px, 3vw, 16px) !important;  /* minder zijruimte */
+    gap: clamp(6px, 1.2vw, 10px) !important;
+  }
+
+  /* Titel/brand kleiner en met ellipsis */
+  .nav-left .brand {
+    font-size: clamp(.9rem, .78rem + .4vw, 1rem) !important;
+    max-width: min(34vw, 180px) !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Thematoets compacter */
+  .nav-center .theme-toggle-btn {
+    min-width: clamp(88px, 16vw, 112px) !important;
+    padding: 6px 10px !important;
+    gap: 6px !important;
+    line-height: 1 !important;
+  }
+  .theme-icn { font-size: 1rem !important; }
+  .theme-label { font-size: .92rem !important; }
+
+  /* “Kies gebruiker” compacter */
+  .switch-btn {
+    padding: 6px 10px !important;
+    font-size: .9rem !important;
+    max-width: clamp(104px, 20vw, 140px) !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Avatar iets kleiner */
+  .avatar {
+    width: clamp(28px, 3vw, 34px) !important;
+    height: clamp(28px, 3vw, 34px) !important;
+  }
+}
+
+/* Extra squeeze 500–640px: label weg op thematoets en nog wat smaller */
+@media (min-width: 500px) and (max-width: 639.98px) {
+  .nav-center .theme-label { display: none !important; }  /* icon-only */
+  .nav-center .theme-toggle-btn { min-width: auto !important; }
+  .nav-left .brand { max-width: min(36vw, 150px) !important; }
+}
+
+/* <= 370px: alles een serieuze portie kleiner in de nav + lijst */
+@media (max-width: 370px) {
+  :root {
+    --nav-h: 50px;
+    --under-nav-h: 38px;
+    --search-h: 34px;
+    --song-item-h: 46px;
+    --song-font: 0.90rem;
+    --player-clear: 220px; /* genoeg ruimte voor player */
+  }
+
+  /* Nav smaller + minder zijruimte */
+  .topbar.nav {
+    padding-inline: 6px !important;
+    gap: 6px !important;
+    grid-template-columns: auto 1fr auto !important;
+  }
+  .nav-left .brand {
+    font-size: 0.90rem !important;
+    max-width: 38vw !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Thema-knop compacter (icon-only) */
+  .nav-center .theme-label { display: none !important; }
+  .nav-center .theme-toggle-btn {
+    min-width: auto !important;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    font-size: 0.90rem !important;
+    line-height: 1 !important;
+  }
+
+  /* Switch user compacter */
+  .switch-btn {
+    padding: 6px 8px !important;
+    font-size: 0.88rem !important;
+    max-width: 120px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Kleinere nav-avatar */
+  .avatar { width: 28px !important; height: 28px !important; }
+
+  /* Zoekbalk kleiner */
+  .searchbar {
+    width: 86vw !important;
+    max-width: 86vw !important;
+    padding: 0.45rem 0.8rem !important;
+    border-radius: 22px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Titel + song-tiles compacter */
+  .playlist-title { font-size: 1.1rem !important; margin: 0.6rem 0 0.5rem !important; }
+  .song-item {
+    width: 100% !important;
+    min-height: var(--song-item-h) !important;
+    padding: 0.65rem 0.9rem !important;
+    font-size: var(--song-font) !important;
+  }
+
+  /* Player compacter zodat list niet overschaduwt */
+  .player-bar { padding: 0.9rem 1rem 0.6rem 1rem !important; gap: 0.6rem !important; }
+  .player-controls { gap: 0.8rem !important; }
+  .player-btn { width: 36px !important; height: 36px !important; font-size: 1.1rem !important; }
+  .player-song { font-size: 0.98rem !important; padding: 0.45rem 0.7rem !important; }
+  .audio-player { max-width: 340px !important; }
+}
+
+/* Extra squeeze voor echt mini-schermen */
+@media (max-width: 330px) {
+  .nav-left .brand { font-size: 0.86rem !important; max-width: 36vw !important; }
+  .nav-center .theme-toggle-btn { padding: 5px 7px !important; }
+  .switch-btn { padding: 5px 7px !important; font-size: 0.85rem !important; }
+  .avatar { width: 26px !important; height: 26px !important; }
+  .searchbar { padding: 0.4rem 0.7rem !important; font-size: 0.92rem !important; }
+  .song-item { padding: 0.6rem 0.8rem !important; }
+}
+
+/* === NAV ultra-compact: <320px tot 250px (enkel nav) === */
+
+/* 319px en kleiner: icon voor thema + compacte "Kies gebruiker" */
+@media (max-width: 319.98px) {
+  .topbar.nav {
+    padding-inline: 4px !important;
+    gap: 4px !important;
+    grid-template-columns: auto 1fr auto !important;
+  }
+
+  .nav-left .brand {
+    font-size: 0.82rem !important;
+    max-width: 38vw !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Theme: icon-only, minimale padding */
+  .nav-center .theme-label { display: none !important; }
+  .nav-center .theme-toggle-btn {
+    min-width: auto !important;
+    padding: 4px 6px !important;
+    gap: 4px !important;
+    line-height: 1 !important;
+  }
+  .theme-icn { font-size: 0.98rem !important; }
+
+  /* Switch user: icon-only (tekst verbergen, toegankelijkheidslabel blijft) */
+  .switch-btn {
+    padding: 4px 6px !important;
+    font-size: 0 !important;              /* verberg tekst */
+    width: 34px !important;
+    max-width: 34px !important;
+    border-radius: 999px !important;
+    position: relative;
+  }
+  .switch-btn::before {
+    content: "👤";
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  /* Avatar kleiner */
+  .avatar { width: 26px !important; height: 26px !important; }
+}
+
+/* 280px en kleiner: brand verbergen voor maximale ruimte, alles op één rij */
+@media (max-width: 280px) {
+  .nav-left { display: none !important; }
+  .topbar.nav {
+    grid-template-columns: 1fr auto !important;  /* center + right */
+    padding-inline: 4px !important;
+  }
+
+  .nav-center .theme-toggle-btn { padding: 4px 5px !important; }
+  .theme-icn { font-size: 0.95rem !important; }
+
+  .switch-btn {
+    width: 32px !important;
+    max-width: 32px !important;
+    padding: 4px !important;
+  }
+  .avatar { width: 24px !important; height: 24px !important; }
+}
+
+/* 250px en kleiner: nog strakker, maar bruikbaar */
+@media (max-width: 250px) {
+  .topbar.nav { padding-inline: 3px !important; gap: 3px !important; }
+
+  .nav-center .theme-toggle-btn {
+    padding: 3px 4px !important;
+    border-width: 1px !important;
+  }
+  .theme-icn { font-size: 0.9rem !important; }
+
+  .switch-btn {
+    width: 30px !important;
+    max-width: 30px !important;
+    padding: 3px !important;
+  }
+  .avatar { width: 22px !important; height: 22px !important; }
+}
+
+/* <= 280px: titel niet verbergen, maar compacter maken (nav-only) */
+@media (max-width: 280px) {
+  .topbar.nav {
+    grid-template-columns: auto 1fr auto !important;
+    padding-inline: 4px !important;
+    gap: 4px !important;
+  }
+
+  /* Titel zichtbaar houden en verkleinen */
+  .nav-left { display: flex !important; align-items: center !important; }
+  .nav-left .brand {
+    font-size: 0.78rem !important;
+    max-width: 42vw !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    letter-spacing: .005em !important;
+  }
+
+  /* Knoppen extra compact */
+  .nav-center .theme-label { display: none !important; } /* icon-only */
+  .nav-center .theme-toggle-btn { min-width: auto !important; padding: 4px 6px !important; }
+  .switch-btn { width: 32px !important; max-width: 32px !important; padding: 4px !important; font-size: 0 !important; }
+  .switch-btn::before { content: "👤"; font-size: 0.95rem; line-height: 1; }
+  .avatar { width: 24px !important; height: 24px !important; }
+}
+
+/* ===== Audio controls: fluid sizing (tijd, tijdbalk, play, volume) ==== */
+
+/* Basiswaarden (desktop) */
+:root{
+  --ap-font: 1.06rem;     /* tijdweergave */
+  --ap-timeline-h: 7px;   /* hoogte voortgangsbalk */
+  --ap-btn-scale: 1;      /* schaal play/mute button */
+  --ap-vol-h: 6px;        /* hoogte volumeslider */
+}
+
+/* Koppel variabelen */
+.audio-player{
+  font-size: var(--ap-font);
+}
+.audio-player::-webkit-media-controls-timeline{
+  height: var(--ap-timeline-h);
+}
+.audio-player::-webkit-media-controls-play-button,
+.audio-player::-webkit-media-controls-mute-button{
+  transform: scale(var(--ap-btn-scale));
+}
+.audio-player::-webkit-media-controls-volume-slider{
+  height: var(--ap-vol-h);
+}
+.audio-player::-webkit-media-controls-current-time-display,
+.audio-player::-webkit-media-controls-time-remaining-display{
+  font-size: calc(var(--ap-font) - 0.06rem);
+}
+
+/* Firefox fallback (beperkt) */
+.audio-player { scrollbar-width: thin; }
+
+/* — Breedte-gedreven verkleinen — */
+@media (max-width: 800px){
+  :root{
+    --ap-font: 1rem;
+    --ap-timeline-h: 6px;
+    --ap-btn-scale: .96;
+    --ap-vol-h: 5px;
+  }
+}
+@media (max-width: 700px){
+  :root{
+    --ap-font: .98rem;
+    --ap-timeline-h: 6px;
+    --ap-btn-scale: .92;
+    --ap-vol-h: 4.5px;
+  }
+}
+@media (max-width: 500px){
+  :root{
+    --ap-font: .94rem;
+    --ap-timeline-h: 5px;
+    --ap-btn-scale: .86;
+    --ap-vol-h: 4px;
+  }
+}
+@media (max-width: 370px){
+  :root{
+    --ap-font: .9rem;
+    --ap-timeline-h: 4px;
+    --ap-btn-scale: .8;
+    --ap-vol-h: 3.5px;
+  }
+}
+@media (max-width: 320px){
+  :root{
+    --ap-font: .86rem;
+    --ap-timeline-h: 3.5px;
+    --ap-btn-scale: .76;
+    --ap-vol-h: 3px;
+  }
+}
+
+/* — Hoogte-gedreven verkleinen — */
+@media (max-height: 880px){
+  :root{
+    --ap-font: .98rem;
+    --ap-timeline-h: 6px;
+    --ap-btn-scale: .92;
+    --ap-vol-h: 4.5px;
+  }
+}
+@media (max-height: 740px){
+  :root{
+    --ap-font: .92rem;
+    --ap-timeline-h: 5px;
+    --ap-btn-scale: .85;
+    --ap-vol-h: 3.8px;
+  }
+}
+@media (max-height: 620px){
+  :root{
+    --ap-font: .88rem;
+    --ap-timeline-h: 4px;
+    --ap-btn-scale: .8;
+    --ap-vol-h: 3.2px;
+  }
+}
+
+/* Mobiele toolbar-correctie met svh */
+@supports (height: 100svh){
+  @media (max-width: 500px){
+    :root{
+      --ap-font: .92rem;
+      --ap-timeline-h: 5px;
+      --ap-btn-scale: .84;
+      --ap-vol-h: 3.6px;
+    }
+  }
+}
+
+/* <= 300px: kleinere tekst (tijd + songtitel) */
+@media (max-width: 300px) {
+  :root { --ap-font: .82rem; }
+  .player-song { font-size: .92rem !important; }
+}
+
+/* <= 280px */
+@media (max-width: 280px) {
+  :root { --ap-font: .78rem; }
+  .player-song { font-size: .88rem !important; }
+}
+
+/* <= 250px */
+@media (max-width: 250px) {
+  :root { --ap-font: .74rem; }
+  .player-song { font-size: .84rem !important; }
+}
+
+/* Ultra-compact: nog kleinere tijd/tekst/symbolen in de player */
+@media (max-width: 300px) {
+  :root{
+    --ap-font: .76rem;
+    --ap-timeline-h: 3px;
+    --ap-btn-scale: .74;   /* play/mute icon kleiner */
+    --ap-vol-h: 2.8px;
+  }
+  .player-song { font-size: .86rem !important; }
+  .player-btn  { width: 34px !important; height: 34px !important; font-size: 1rem !important; }
+}
+
+@media (max-width: 280px) {
+  :root{
+    --ap-font: .72rem;
+    --ap-timeline-h: 2.6px;
+    --ap-btn-scale: .70;
+    --ap-vol-h: 2.4px;
+  }
+  .player-song { font-size: .82rem !important; }
+  .player-btn  { width: 32px !important; height: 32px !important; font-size: .95rem !important; }
+}
+
+@media (max-width: 250px) {
+  :root{
+    --ap-font: .68rem;
+    --ap-timeline-h: 2.2px;
+    --ap-btn-scale: .66;
+    --ap-vol-h: 2px;
+  }
+  .player-song { font-size: .78rem !important; }
+  .player-btn  { width: 30px !important; height: 30px !important; font-size: .9rem !important; }
+}
+
+/* ===== SelectPage extra compact < 330px (breder cards, minder whitespace) ===== */
+@media (max-width: 330px) {
+  /* Container bijna volle breedte, centreren */
+  .main-content.select-mode,
+  .select-page {
+    width: 98% !important;
+    max-width: 98% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-inline: auto !important;
+  }
+
+  /* Eén kolom, gecentreerd en met kleinere gaps */
+  .select-page .user-grid {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    gap: 14px !important;
+  }
+
+  /* Kaarten bijna zo breed als container en compacter */
+  .select-page .user-card {
+    width: 98% !important;
+    max-width: 600px !important;
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    margin-inline: auto !important;
+  }
+
+  /* Avatars kleiner en responsief */
+  .select-page .user-avatar {
+    width: clamp(84px, 52vw, 112px) !important;
+    height: clamp(84px, 52vw, 112px) !important;
+  }
+
+  /* Naam iets kleiner en mooi op 2 regels indien nodig */
+  .select-page .user-name {
+    font-size: clamp(1.02rem, 3.8vw, 1.25rem) !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+
+  /* Titel gecentreerd en schaalbaar */
+  .main-content.select-mode h1,
+  .main-content.select-mode .select-title,
+  .select-page .select-title {
+    font-size: clamp(1.06rem, 4.6vw, 1.4rem) !important;
+    text-align: center !important;
+    margin: 6px 0 10px !important;
+    white-space: normal !important;
+  }
+  @supports (text-wrap: balance) {
+    .main-content.select-mode h1,
+    .main-content.select-mode .select-title,
+    .select-page .select-title { text-wrap: balance; }
+  }
+}
+
+/* ===== Verder knijpen < 300px ===== */
+@media (max-width: 300px) {
+  .main-content.select-mode,
+  .select-page { width: 99% !important; max-width: 99% !important; }
+
+  .select-page .user-card { width: 99% !important; padding: 10px 12px !important; }
+
+  .select-page .user-avatar {
+    width: clamp(72px, 52vw, 100px) !important;
+    height: clamp(72px, 52vw, 100px) !important;
+  }
+  .select-page .user-name { font-size: clamp(0.98rem, 3.6vw, 1.18rem) !important; }
+
+  .main-content.select-mode h1,
+  .main-content.select-mode .select-title,
+  .select-page .select-title {
+    font-size: clamp(1rem, 4.4vw, 1.25rem) !important;
+    margin: 6px 0 8px !important;
+  }
+}
+
+/* ===== Ultra compact 280px → 250px ===== */
+@media (max-width: 280px) {
+  .select-page .user-card { width: 99% !important; padding: 9px 10px !important; border-radius: 10px !important; }
+
+  .select-page .user-avatar {
+    width: clamp(64px, 54vw, 92px) !important;
+    height: clamp(64px, 54vw, 92px) !important;
+  }
+  .select-page .user-name { font-size: clamp(0.94rem, 3.4vw, 1.1rem) !important; }
+
+  .main-content.select-mode h1,
+  .main-content.select-mode .select-title,
+  .select-page .select-title {
+    font-size: clamp(0.96rem, 4.2vw, 1.18rem) !important;
+  }
+}
+
+@media (max-width: 250px) {
+  .select-page .user-card { width: 99% !important; padding: 8px 9px !important; border-radius: 8px !important; }
+
+  .select-page .user-avatar {
+    width: clamp(56px, 56vw, 84px) !important;
+    height: clamp(56px, 56vw, 84px) !important;
+  }
+  .select-page .user-name { font-size: clamp(0.9rem, 3.2vw, 1.05rem) !important; }
+
+  .main-content.select-mode h1,
+  .main-content.select-mode .select-title,
+  .select-page .select-title {
+    font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
+    margin: 4px 0 8px !important;
+  }
+}
+
+/* Auth page */
+.auth-page {
+  display: grid;
+  place-items: center;
+  padding: 40px 16px;
+}
+.auth-card {
+  width: min(460px, 92vw);
+  background: var(--bg-2, #181818);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 14px;
+  padding: 22px;
+  color: var(--text, #fff);
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 12px;
+  transform: translateY(0);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+.auth-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.5);
+}
+body:not(.dark) .auth-card {
+  background: #ffffff;
+  border-color: #e6e6e6;
+  box-shadow: 0 16px 40px rgba(15, 17, 21, 0.08);
+  color: #0f1115;
+}
+
+.auth-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.user-avatar.lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+body:not(.dark) .user-avatar.lg {
+  box-shadow: 0 2px 10px rgba(15,17,21,0.08);
+}
+
+.auth-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text, #fff);
+}
+body:not(.dark) .auth-title {
+  color: #0f1115;
+}
+
+.modal-label {
+  font-size: 0.9rem;
+  color: var(--muted, #bbb);
+  width:90%;
+}
+body:not(.dark) .modal-label {
+  color: #4b5563;
+}
+
+.login-input {
+  width: 100%;
+  padding: 11px 12px;
+  background: var(--bg-3, #121212);
+  color: var(--text, #fff);
+  border: 1px solid var(--border, #2a2a2a);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.login-input::placeholder { color: #9aa0a6; }
+.login-input:focus {
+  border-color: var(--accent, #1db954);
+  box-shadow: 0 0 0 3px rgba(29,185,84,0.22);
+}
+body:not(.dark) .login-input {
+  background: #fff;
+  color: #0f1115;
+  border-color: #d0d7de;
+}
+body:not(.dark) .login-input::placeholder { color: #8a939e; }
+body:not(.dark) .login-input:focus {
+  border-color: var(--accent, #1db954);
+  box-shadow: 0 0 0 3px rgba(29,185,84,0.18);
+}
+
+.modal-error {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.auth-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 120ms ease, border-color 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.btn-primary {
+  background: var(--accent, #1db954);
+  color: #0b1e10;
+  box-shadow: 0 6px 18px rgba(29,185,84,0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(29,185,84,0.32); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text, #fff);
+  border-color: var(--border, #2a2a2a);
+}
+.btn-secondary:hover { border-color: var(--accent, #1db954); }
+body:not(.dark) .btn-secondary {
+  background: #fff;
+  color: #0f1115;
+  border-color: #d0d7de;
+}
+body:not(.dark) .btn-secondary:hover {
+  border-color: var(--accent, #1db954);
+}
+
+/* Password field with toggle */
+.password-field {
+  position: relative;
+}
+.password-field .login-input {
+  padding-right: 44px; /* ruimte voor toggle */
+}
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--muted, #bbb);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+.password-toggle:hover {
+  color: var(--text, #fff);
+  background: rgba(255,255,255,0.06);
+}
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.98);
+}
+body:not(.dark) .password-toggle {
+  color: #6b7280;
+}
+body:not(.dark) .password-toggle:hover {
+  color: #0f1115;
+  background: rgba(15,17,21,0.06);
+}
+
+/* Auth: constrain label + password field inside the card */
+.auth-card .modal-label,
+.auth-card .password-field {
+  width: 100%;
+  max-width: clamp(240px, 92%, 380px); /* kleiner en responsief binnen de kaart */
+  margin-inline: auto;                 /* centreren */
+}
+
+/* Zorg dat het input zelf niet buiten de wrapper valt */
+.auth-card .password-field .login-input {
+  width: 100%;
+}
+
+/* Kleinere rechterpadding voor de toggle in smalle layouts */
+.auth-card .password-field .login-input {
+  padding-right: 40px;
+}
+.auth-card .password-field .password-toggle {
+  right: 8px;
+}
+
+/* Auth layout: alles netjes gecentreerd binnen dezelfde max-width */
+.auth-card { justify-items: center; } /* center alle children horizontaal */
+
+.auth-user,
+.auth-card .modal-label,
+.auth-card .password-field,
+.auth-actions {
+  width: 100%;
+  max-width: 380px;          /* zelfde breedte voor header, label, input en acties */
+  margin-inline: auto;       /* centreren */
+}
+
+/* Header (avatar + titel) blijft links uitlijnen binnen de gecentreerde kolom */
+.auth-user { justify-content: flex-start; }
+
+/* Label links, maar in dezelfde gecentreerde kolom */
+.auth-card .modal-label { display: block; text-align: left; }
+
+/* Input wrapper met toggleknop volledig inside de input */
+.password-field { position: relative; }
+
+/* Zorg voor ruimte voor de toggle-knop binnen de input */
+.password-field .login-input {
+  width: 100%;
+  padding-right: 46px; /* ruimte voor de knop */
+  box-sizing: border-box;
+  margin: 0;           /* geen onverwachte margin die het naar rechts duwt */
+}
+
+/* Toggle exact aan het einde, verticaal gecentreerd */
+.password-toggle {
+  position: absolute;
+  right: 12px;               /* strak tegen de rand, binnen de input */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--muted, #9aa0a6);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+/* Focus states: toon iets duidelijker bij keyboardfocus */
+.password-field:focus-within .password-toggle {
+  color: var(--text, #fff);
+}
+body:not(.dark) .password-toggle { color: #6b7280; }
+body:not(.dark) .password-field:focus-within .password-toggle { color: #0f1115; }
+
+/* Acties (knoppen) in dezelfde gecentreerde kolom, uitlijnen rechts binnen die kolom */
+.auth-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

@@ -1,0 +1,339 @@
+/* ===== Player Container ===== */
+.player-bar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: var(--player-bg, rgba(0,0,0,0.5));
+  backdrop-filter: blur(6px);
+}
+
+/* ===== Controls ===== */
+.player-controls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.player-btn {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.player-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+.player-btn-main {
+  font-size: 18px;
+  padding: 6px 12px;
+}
+
+/* Ronde, opvallende player-knoppen */
+.player-controls .player-btn {
+  /* vervang vaste maten door variabele */
+  width: var(--player-btn-sz, 48px) !important;
+  height: var(--player-btn-sz, 48px) !important;
+  /* optioneel: icoon iets mee laten schalen */
+  font-size: clamp(1rem, calc(var(--player-btn-sz, 48px) * 0.28), 1.35rem);
+  border-radius: 999px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  color: #fff;
+  background: radial-gradient(120% 120% at 50% 0%, #28cf74 0%, #1db954 45%, #118b3a 100%);
+  box-shadow: 0 6px 20px rgba(29,185,84,0.25), inset 0 0 0 2px rgba(255,255,255,0.08);
+  transition: transform .12s ease, box-shadow .2s ease, filter .12s ease;
+}
+.player-controls .player-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(29,185,84,0.35), inset 0 0 0 2px rgba(255,255,255,0.12);
+  filter: brightness(1.02);
+}
+.player-controls .player-btn:active { transform: translateY(0); }
+
+/* ===== Song Title ===== */
+.player-song-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-song {
+  font-size: 1.22rem;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: #232323;
+  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 2px 12px #1db95411;
+  width: 100%;
+  text-align: center;
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+body:not(.dark) .player-song {
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ===== react-h5-audio-player Styling ===== */
+.rhap_container {
+  background: #232323 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 12px #1db95433 !important;
+  padding: 0.5rem 0.8rem !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+.rhap_main-controls button,
+.rhap_play-pause-button {
+  color: #1db954 !important;
+  border-radius: 50% !important;
+  background: #181818 !important;
+  box-shadow: 0 2px 8px #1db95422 !important;
+  transition: background 0.2s, color 0.2s, transform 0.13s;
+  margin-top:0rem;
+}
+.rhap_play-pause-button:hover,
+.rhap_main-controls button:hover {
+  background: #1db954 !important;
+  color: #181818 !important;
+  transform: scale(1.09);
+}
+.rhap_main-controls button {
+  font-size: 2.5rem !important;
+}
+
+.rhap_progress-bar {
+  background: #232323 !important;
+  height: 12px !important;
+  border-radius: 6px !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  z-index: 1 !important;
+}
+.rhap_progress-filled {
+  background: white !important;
+}
+.rhap_progress-indicator {
+  background: #1db954 !important;
+  box-shadow: 0 2px 8px #1db95444 !important;
+  margin-top:0.25rem;
+}
+.rhap_download-progress {
+  background: #1db954 !important;
+}
+.rhap_time {
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 1.02rem !important;
+}
+
+.rhap_volume-bar {
+  height: 7px !important;
+  border-radius: 4px !important;
+  background-color: white;
+}
+.rhap_volume-filled {
+  background: #1db954 !important;
+}
+.rhap_volume-indicator {
+  background: #1db954 !important;
+  border: 2px solid #181818 !important;
+  box-shadow: 0 1px 6px #1db95455 !important;
+  opacity: 1 !important;
+  margin-top: -.15rem;
+  padding:0.5rem;
+}
+.rhap_repeat-button {
+  color: #1db954 !important;
+}
+
+/* Controls spacing + alignment */
+.rhap_controls-section {
+  gap: 1rem !important;
+  align-items: center !important;
+}
+
+/* Remove jump controls, download, etc. if not needed */
+.rhap_additional-controls,
+.rhap_download-progress {
+  display: none !important;
+}
+
+/* Center de player secties binnen hun max-width */
+.player-bar,
+.player-song-row,
+.rhap_container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Light mode varianten (vormen blijven gelijk) */
+body:not(.dark) .player-bar {
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+body:not(.dark) .player-btn {
+  color: #0f1115;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+body:not(.dark) .player-btn:hover {
+  background: rgba(0,0,0,0.06);
+}
+body:not(.dark) .player-song {
+  background: #f0f2f4;
+  color: #0f1115;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* react-h5-audio-player — light mode */
+body:not(.dark) .rhap_container {
+  background: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+}
+body:not(.dark) .rhap_main-controls button,
+body:not(.dark) .rhap_play-pause-button {
+  color: #0f1115 !important;
+  background: #f2f2f2 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+body:not(.dark) .rhap_play-pause-button:hover,
+body:not(.dark) .rhap_main-controls button:hover {
+  background: #1db954 !important;
+  color: #ffffff !important;
+  transform: scale(1.06);
+}
+body:not(.dark) .rhap_progress-bar {
+  background: #e8e8e8 !important;
+}
+body:not(.dark) .rhap_progress-filled {
+  background: #1db954 !important; /* progress in groen */
+}
+body:not(.dark) .rhap_progress-indicator {
+  background: #0f1115 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+body:not(.dark) .rhap_download-progress {
+  background: rgba(29,185,84,0.35) !important;
+}
+body:not(.dark) .rhap_time {
+  color: #0f1115 !important;
+}
+body:not(.dark) .rhap_volume-bar {
+  background: #e8e8e8 !important;
+}
+body:not(.dark) .rhap_volume-filled {
+  background: #1db954 !important;
+}
+body:not(.dark) .rhap_volume-indicator {
+  background: #0f1115 !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.18) !important;
+}
+
+/* Forceer zichtbare iconkleur voor react-h5-audio-player */
+.rhap_container .rhap_main-controls-button,
+.rhap_container .rhap_volume-button,
+.rhap_container .rhap_rewind-button,
+.rhap_container .rhap_forward-button {
+  color: var(--text, #111); /* licht thema */
+}
+
+body.dark .rhap_container .rhap_main-controls-button,
+body.dark .rhap_container .rhap_volume-button,
+body.dark .rhap_container .rhap_rewind-button,
+body.dark .rhap_container .rhap_forward-button {
+  color: #fff; /* donker thema */
+}
+
+/* Zorg dat SVG’s hun kleur goed erven */
+.rhap_container svg,
+.rhap_container svg path {
+  fill: currentColor !important;
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 700px) {
+  .player-bar {
+    max-width: 700px;
+  }
+  .player-song-row, .rhap_container {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 500px) {
+  .player-bar {
+    max-width: 100vw;
+  }
+  .player-song-row, .rhap_container {
+    max-width: 95vw;
+    font-size: 1.03rem;
+  }
+}
+
+/* ===== Compacte/uitgelijnde player ≤ 400px (verstoort >400px niet) ===== */
+@media (max-width: 400px) {
+  :root{
+    --player-btn-sz: 32px;           /* bovensectie knoppen kleiner */
+  }
+
+  /* Player container compacter */
+  .player-bar { gap: 8px; padding: 8px 10px; }
+  .player-song { font-size: 0.98rem; padding: 0.5rem 0.8rem; max-width: 92%; }
+
+  /* h5-audio-player compacter */
+  .rhap_container { padding: 0.35rem 0.5rem !important; }
+  .rhap_main-controls button { font-size: 1.3rem !important; }  /* play/pause icoon */
+  .rhap_play-pause-button {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    line-height: 1 !important;
+  }
+  .rhap_time { font-size: 0.85rem !important; }
+
+  /* ≤ 400px: knob boven de groene balk + perfecte centrering */
+  /* Context voor z-index */
+  .rhap_progress-section,
+  .rhap_progress-container,
+  .rhap_volume-container { position: relative !important; }
+
+  /* Bars en fills onderaan de stack */
+  .rhap_progress-bar,
+  .rhap_volume-bar { position: relative !important; z-index: 0 !important; }
+  .rhap_download-progress,
+  .rhap_progress-filled,
+  .rhap_volume-filled { position: relative !important; z-index: 1 !important; }
+
+  /* Knoppen altijd erbovenop */
+  .rhap_progress-indicator,
+  .rhap_volume-indicator {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin-top: 0 !important;
+    width: 10px !important;
+    height: 10px !important;
+    margin-left: -5px !important;     /* horizontaal centreren t.o.v. left:X% */
+    z-index: 3 !important;            /* boven de groene balk */
+    pointer-events: auto;
+  }
+
+  /* Balkhoogtes klein houden (optioneel) */
+  .rhap_progress-bar { height: 6px !important; }
+  .rhap_volume-bar   { height: 4px !important; }
+}
