@@ -353,7 +353,36 @@ app.get("/api/stream-url/:id", streamUrlLimiter, requireAuth, (req, res) => {
   res.json({ url, exp });
 });
 
-// Stream accepteert nu alleen de gesigneerde URL
+// ===== STREAM CORS HELPERS + MIDDLEWARE (BOVEN de route!) =====
+
+function getAllowedOrigins(): string[] {
+  return (process.env.CORS_ORIGIN?.split(",").map(s => s.trim()).filter(Boolean) || ["http://localhost:5173"]);
+}
+
+function setStreamCorsHeaders(req: express.Request, res: express.Response) {
+  const allowed = getAllowedOrigins();
+  const origin = String(req.headers.origin || "");
+  if (origin && allowed.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", allowed[0] || "*");
+  }
+  res.setHeader("Access-Control-Allow-Headers", "Range,Content-Type,Authorization");
+  res.setHeader("Access-Control-Expose-Headers", "Accept-Ranges,Content-Length,Content-Range");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
+}
+
+// Middleware voor alle /stream requests (moet VOOR de route komen!)
+app.use("/stream", (req, res, next) => {
+  setStreamCorsHeaders(req, res);
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+  next();
+});
+
+// ===== NU PAS DE /stream ROUTE =====
+
 app.get("/stream/:id", async (req, res) => {
   try {
     const fileId = String(req.params.id || "");
@@ -371,7 +400,6 @@ app.get("/stream/:id", async (req, res) => {
     const size = meta.data.size ? parseInt(meta.data.size, 10) : undefined;
     const range = req.headers.range;
 
-    // Voor streams: private en niet cachen
     res.setHeader("Cache-Control", "private, max-age=0, must-revalidate");
 
     if (!size || !range) {
@@ -425,6 +453,12 @@ app.get("/stream/:id", async (req, res) => {
     console.error("Stream-fout:", err);
     res.status(500).send("Fout bij streamen");
   }
+});
+
+// Preflight support for stream endpoint
+app.options("/stream/:id", (req, res) => {
+  setStreamCorsHeaders(req, res);
+  res.status(204).end();
 });
 
 // ✅ SPA fallback – sluit ook /api uit
